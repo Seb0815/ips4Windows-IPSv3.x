@@ -1,0 +1,99 @@
+
+<?
+
+    include(IPS_GetScriptFile(37603 /*[Test\ipsControl\PushNotification\WindowsNotificationClass]*/));
+
+     if ($_IPS['SENDER'] == "Variable") //Trigger kam von Variable
+     {
+
+         if ($_IPS['VARIABLE'] == 31609 /*[System\HM Statusmeldungen\Messages]*/)
+        {
+
+         $Devices = IPS_GetChildrenIDs ( 38012 /*[Test\ipsControl\PushNotification\Devices]*/ );
+
+            foreach($Devices as $Device)
+         {
+
+             $WNShub = new WindowsNotification($Device);
+                 $WNShub->EnableDebug(false);
+                $WNShub->sendTileNotification("blub","blub1","blub2");
+
+            }
+
+
+        }
+    }
+    elseif($_IPS['SENDER'] == "TimerEvent") //Trigger war ein TimerEvent
+    {
+        $light=GetValue(17849 /*[System\Wetterberechnung\Lichtmenge]*/);
+        $light=(int)($light*100);
+        $light="Licht: ".$light."%";
+       $Temp_outside="Temperatur: ".GetValue(58965 /*[Räume\Heizungskeller\Wetterstation\WMRS200 Temperatur- und Feuchtigkeitssensor (Außen)\Temperatur]*/) ."°C";
+
+        $rain = GetValueInteger(47494 /*[Räume\Garten\Regensensor\Kanal 1\STATE]*/);
+        if ($rain)
+           $rainTXT = "es regnet aktuell!";
+        else
+            $rainTXT = "";
+
+        $text2="Wohnzimmer: ".GetValue(38295 /*[Räume\Wohnzimmer\Heizung\Wandthermostat\Werte\TEMPERATURE]*/) ."°C";
+        $text3="Büro: ".GetValue(45595 /*[Räume\Büro\Heizung\Regelung\Werte\ACTUAL_TEMPERATURE]*/) ."°C";
+       $WindowOpen = GetValueInteger(36341 /*[System\Fenster Offen Anzeige\iWindowOpen]*/);
+       if ($WindowOpen > 0)
+          $WindowOpenTXT = $WindowOpen." Fenster geöffnet";
+        else
+           $WindowOpenTXT = "";
+
+       $Devices = IPS_GetChildrenIDs ( 38012 /*[Test\ipsControl\PushNotification\Devices]*/ );
+
+        foreach($Devices as $Device)
+      {
+
+              $WNShub = new WindowsNotification($Device);
+                $WNShub->EnableDebug(false);
+                $WNShub->SetWNSMsgToken("1");
+                $WNShub->sendTileNotification("Wetter",$Temp_outside,$light,$rainTXT);
+                $WNShub->SetWNSMsgToken("2");
+                $WNShub->sendTileNotification("Räume",$text2,$text3,$WindowOpenTXT);
+
+        }
+    }
+    elseif($_IPS['SENDER'] == "Execute")
+    {
+        $light=GetValue(17849 /*[System\Wetterberechnung\Lichtmenge]*/);
+        $light=(int)($light*100);
+        $light="Licht: ".$light."%";
+       $Temp_outside="Temperatur: ".GetValue(58965 /*[Räume\Heizungskeller\Wetterstation\WMRS200 Temperatur- und Feuchtigkeitssensor (Außen)\Temperatur]*/) ."°C";
+
+        $rain = GetValueInteger(47494 /*[Räume\Garten\Regensensor\Kanal 1\STATE]*/);
+        if ($rain)
+           $rainTXT = "es regnet aktuell!";
+        else
+            $rainTXT = "";
+
+        $text2="Wohnzimmer: ".GetValue(38295 /*[Räume\Wohnzimmer\Heizung\Wandthermostat\Werte\TEMPERATURE]*/) ."°C";
+        $text3="Büro: ".GetValue(45595 /*[Räume\Büro\Heizung\Regelung\Werte\ACTUAL_TEMPERATURE]*/) ."°C";
+       $WindowOpen = GetValueInteger(36341 /*[System\Fenster Offen Anzeige\iWindowOpen]*/);
+       if ($WindowOpen > 0)
+          $WindowOpenTXT = $WindowOpen." Fenster geöffnet";
+        else
+           $WindowOpenTXT = "";
+       
+       $Devices = IPS_GetChildrenIDs ( 38012 /*[Test\ipsControl\PushNotification\Devices]*/ );
+
+        foreach($Devices as $Device)
+      {
+
+          $WNShub = new WindowsNotification($Device);
+            $WNShub->EnableDebug(false);
+            $WNShub->SetWNSMsgToken("1");
+            $WNShub->sendTileNotification("Wetter",$Temp_outside,$light,$rainTXT);
+            $WNShub->SetWNSMsgToken("2");
+            $WNShub->sendTileNotification("Räume",$text2,$text3,$WindowOpenTXT);
+    
+        }
+    }
+   
+    
+?>  
+Einen LiveTile durch einen langen Druck auf die App 

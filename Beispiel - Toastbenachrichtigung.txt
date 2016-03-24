@@ -1,0 +1,49 @@
+<?
+    includescript(37603 /*[Test\ipsControl\PushNotification\WindowsNotificationClass]*/);
+
+    function includeScript($scriptID)
+     {
+        $s = IPS_GetScript($scriptID);
+          include($s['ScriptFile']);
+     }
+ 
+
+     if ($_IPS['SENDER'] == "Variable") //Trigger kam von Variable
+     {
+       
+         if ($_IPS['VARIABLE'] == 31609 /*[System\HM Statusmeldungen\Messages]*/)
+        {
+    
+         $Devices = IPS_GetChildrenIDs ( 38012 /*[Test\ipsControl\PushNotification\Devices]*/ );
+        
+            foreach($Devices as $Device)
+         {
+          
+             $WNShub = new WindowsNotification($Device);
+                 $WNShub->EnableDebug(false);
+                $WNShub->sendToastNotification("ipsControl,$_IPS['VALUE']);
+            }
+        }
+    }
+    elseif ($_IPS['SENDER'] == "Execute") //Trigger kam von Variable
+     {
+
+         
+
+         $Devices = IPS_GetChildrenIDs ( 38012 /*[Test\ipsControl\PushNotification\Devices]*/ );
+
+            foreach($Devices as $Device)
+         {
+
+             $WNShub = new WindowsNotification($Device);
+                 $WNShub->EnableDebug(true);
+                $WNShub->sendToastNotification("ipsControl",GetValueInteger(31609 /*[System\HM Statusmeldungen\Messages]*/));
+
+            }
+
+
+
+    }
+    
+ 
+?> 
