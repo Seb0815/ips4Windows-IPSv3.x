@@ -1,0 +1,19 @@
+<?
+
+    include(IPS_GetScriptFile(13888 /*[Test\ipsControl\VoiceControl\VoiceControlClass]*/));
+
+     $VoiceControl = new VoiceControl(33576 /*[Test\ipsControl\VoiceControl]*/);
+     $VoiceControl->EnableDebug(true);
+    $VoiceControl->AddVoiceCommand("Licht","Büro","27673","15476");
+    $VoiceControl->AddVoiceCommand("Licht","Wohnzimmer","28396","12008");
+    $VoiceControl->AddVoiceCommand("Rollo","Büro","36198","25111");
+    $VoiceControl->AddVoiceCommand("Rollo","Wohnzimmer zur Terasse","20797","49234");
+    $VoiceControl->AddVoiceCommand("Rollo","Wohnzimmer zur Seite","13445","14677");
+    $VoiceControl->AddVoiceCommand("Radio","Küche","0","19382");
+    $VoiceControl->AddVoiceCommand("Heizung","Büro","53879","53424");
+    $VoiceControl->AddVoiceCommand("bin","weg","0","38991");
+    $VoiceControl->AddVoiceCommand("Chef","da","0","12345");
+
+    $VoiceControl->writeData();
+  
+?> 

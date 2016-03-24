@@ -1,0 +1,47 @@
+<?
+    class VoiceControl
+    {
+       private $id;
+        private $Content = "";
+        private $Debug = false;
+
+        function __construct($ObjID)
+        {
+            $this->id = $ObjID;
+        }
+
+        public function EnableDebug($Debug)
+        {
+           $this->Debug = $Debug;
+        }
+        public function AddVoiceCommand($Actor,$Room,$Instance,$VarID)
+        {
+           $value = $Actor."#".$Room."#".$Instance."#".$VarID;
+           if (strlen($this->Content) > 0)
+           {
+               $this->Content = $this->Content."°".$value;
+               if ($this->Debug)
+               echo "append '".$value."' to existing content\n";
+           }
+            else
+            {
+                $this->Content = $value;
+                if ($this->Debug)
+                echo "add '".$value."' as new content\n";
+            }
+        }
+        public function writeData()
+        {
+            if ($this->Debug)
+            {
+             $array = explode("°",$this->Content);
+             echo "working on ".count($array)." sets of data\n";
+             }
+            $utf8 = utf8_encode($this->Content);
+               $base64 = base64_encode($utf8);
+               SetValueString($this->id,$base64);
+        }
+    }
+        
+
+?> 
